@@ -9,10 +9,21 @@ Both lists download as a single JSON file.
 
 | List  | Data file              |
 | ----- | ---------------------- |
-| Emotes | `src/lib/emotes.json`  |
-| Items  | `src/lib/items.json`   |
+| Emotes | `Ids-highrise/emotes.json` |
+| Items  | `Ids-highrise/untradable_items_new.json` |
 
-To update a list, replace the matching JSON file with an array of objects:
+To update a list, edit its JSON file on the `main` branch of
+[Ids-highrise](https://github.com/djxhknz/Ids-highrise). Visitors read the latest
+public files directly from GitHub when they open or refresh the site, with no
+Vercel redeploy needed for data changes. An already open page refreshes when
+the visitor returns to its browser tab; there is no background polling.
+
+The bundled `src/lib/emotes.json` and `src/lib/items.json` are fallback snapshots
+for prerendering and GitHub/network failures. On failure, the site keeps the last
+available list and displays a notice. Search, filters, copying, and JSON downloads
+all use the list currently displayed. The data repository must remain public.
+
+Use an array of objects:
 
 ```json
 [

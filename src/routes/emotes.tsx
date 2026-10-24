@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import EMOTES from "@/lib/emotes.json";
 import { IdTable } from "@/components/IdTable";
 import { SiteFooter } from "@/components/SiteFooter";
+import { useLiveList } from "@/hooks/use-live-list";
 
 export const Route = createFileRoute("/emotes")({
   head: () => ({
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/emotes")({
 });
 
 function Emotes() {
+  const { data: emotes, isError } = useLiveList("emotes", EMOTES);
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <Link to="/" className="text-sm text-muted-foreground hover:underline">
@@ -32,11 +34,12 @@ function Emotes() {
       </Link>
       <h1 className="mt-4 text-3xl font-bold">Highrise Emote IDs</h1>
       <p className="mt-2 text-muted-foreground">
-        Click any ID to copy it — total: {EMOTES.length}
+        Click any ID to copy it — total: {emotes.length}
       </p>
+      {isError && <p role="status" className="mt-2 text-sm text-muted-foreground">Latest list unavailable. Showing the last available copy.</p>}
 
       <IdTable
-        items={EMOTES}
+        items={emotes}
         jsonName="emotes.json"
         pyName="emote_map.py"
         txtName="emotes.txt"
