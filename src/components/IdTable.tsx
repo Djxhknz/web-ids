@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ItemThumbnail } from "@/components/ItemThumbnail";
 
 export type IdItem = {
   name: string;
@@ -40,6 +41,7 @@ export function IdTable({
   pyVarName,
   emptyNote,
   downloads = ["json", "python", "txt"],
+  showItemImages = false,
 }: {
   items: IdItem[];
   jsonName: string;
@@ -49,6 +51,7 @@ export function IdTable({
   emptyNote?: string;
   /** Which download buttons to show, in this order. */
   downloads?: ("json" | "python" | "txt")[];
+  showItemImages?: boolean;
 }) {
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
@@ -232,7 +235,12 @@ export function IdTable({
             {list.map((e, i) => (
               <tr key={`${e.id}-${i}`} className="border-t">
                 <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
-                <td className="px-3 py-2 break-words">{e.name}</td>
+                <td className="px-3 py-2 break-words">
+                  <div className="flex items-center gap-3">
+                    {showItemImages && <ItemThumbnail key={e.id} id={e.id} name={e.name} />}
+                    <span>{e.name}</span>
+                  </div>
+                </td>
                 <td className="px-3 py-2">
                   <button onClick={() => copy(e.id)} className="font-mono break-all text-left hover:underline">
                     {e.id}

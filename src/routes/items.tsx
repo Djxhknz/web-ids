@@ -46,6 +46,7 @@ function Items() {
         txtName="items.txt"
         pyVarName="ITEM_MAP"
         downloads={["json"]}
+        showItemImages
       />
       <SiteFooter />
     </main>
