@@ -3,6 +3,7 @@ import EMOTES from "@/lib/emotes.json";
 import { IdTable } from "@/components/IdTable";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLiveList } from "@/hooks/use-live-list";
+import { usePickRequest } from "@/hooks/use-pick-request";
 
 export const Route = createFileRoute("/emotes")({
   head: () => ({
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/emotes")({
 
 function Emotes() {
   const { data: emotes, isError } = useLiveList("emotes", EMOTES);
+  const pick = usePickRequest("emote");
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <Link to="/" className="text-sm text-muted-foreground hover:underline">
@@ -45,6 +47,7 @@ function Emotes() {
         txtName="emotes.txt"
         pyVarName="EMOTE_MAP"
         downloads={["json"]}
+        pick={pick}
       />
       <SiteFooter />
     </main>

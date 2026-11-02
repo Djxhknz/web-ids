@@ -3,6 +3,7 @@ import ITEMS from "@/lib/items.json";
 import { IdTable } from "@/components/IdTable";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLiveList } from "@/hooks/use-live-list";
+import { usePickRequest } from "@/hooks/use-pick-request";
 
 export const Route = createFileRoute("/items")({
   head: () => ({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/items")({
 
 function Items() {
   const { data: items, isError } = useLiveList("items", ITEMS);
+  const pick = usePickRequest("item");
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <Link to="/" className="text-sm text-muted-foreground hover:underline">
@@ -46,6 +48,7 @@ function Items() {
         txtName="items.txt"
         pyVarName="ITEM_MAP"
         downloads={["json"]}
+        pick={pick}
         showItemImages
       />
       <SiteFooter />

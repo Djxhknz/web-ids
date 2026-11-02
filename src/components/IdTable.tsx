@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ItemThumbnail } from "@/components/ItemThumbnail";
+import { sendPick, type PickRequest } from "@/lib/pick";
 
 export type IdItem = {
   name: string;
@@ -42,6 +43,7 @@ export function IdTable({
   emptyNote,
   downloads = ["json", "python", "txt"],
   showItemImages = false,
+  pick = null,
 }: {
   items: IdItem[];
   jsonName: string;
@@ -52,6 +54,8 @@ export function IdTable({
   /** Which download buttons to show, in this order. */
   downloads?: ("json" | "python" | "txt")[];
   showItemImages?: boolean;
+  /** وضع الاختيار: يضيف زر «Select» لكل صف ويرجّع الاختيار للوحة الطالبة. */
+  pick?: PickRequest | null;
 }) {
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
@@ -118,6 +122,17 @@ export function IdTable({
 
   return (
     <>
+      {pick && (
+        <div role="status" className="mt-6 flex flex-wrap items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary/10 px-4 py-3 text-sm">
+          <span>
+            Choose {pick.kind === "emote" ? "an emote" : "an item"} to send back to{" "}
+            <span className="font-mono">{pick.origin}</span>
+          </span>
+          <a href={pick.returnUrl} className="text-muted-foreground hover:underline">
+            Cancel
+          </a>
+        </div>
+      )}
       <div className="mt-6 flex flex-wrap gap-2">
         {downloads.includes("json") && (
           <button
@@ -229,6 +244,7 @@ export function IdTable({
               {hasCategory && <th className="hidden px-3 py-2 sm:table-cell">Category</th>}
               {hasRarity && <th className="hidden px-3 py-2 sm:table-cell">Rarity</th>}
               {hasDuration && <th className="px-3 py-2">Duration</th>}
+              {pick && <th className="px-3 py-2">Select</th>}
             </tr>
           </thead>
           <tbody>
@@ -262,6 +278,16 @@ export function IdTable({
                 {hasDuration && (
                   <td className="px-3 py-2">
                     {e.duration === undefined ? "-" : `${e.duration}s`}
+                  </td>
+                )}
+                {pick && (
+                  <td className="px-3 py-2">
+                    <button
+                      onClick={() => sendPick(pick, e)}
+                      className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                    >
+                      Select
+                    </button>
                   </td>
                 )}
               </tr>

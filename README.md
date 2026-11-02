@@ -54,3 +54,14 @@ automatically — no extra settings are needed.
 - TypeScript
 - React
 - Tailwind CSS
+
+## Pick mode (for external panels)
+
+A panel can let its users choose an emote/item from this site and get the ID back.
+
+- Request: `/emotes?pick=emote&return=<url>&state=<token>[&mode=popup]` (use `pick=item` on `/items`).
+- Every row gets a **Select** button. The choice is returned either
+  - by redirect: `<return>?picked_kind=…&picked_id=…&picked_name=…&picked_duration=…&state=…`, or
+  - with `mode=popup`: `window.opener.postMessage({ type: "highrise-ids:pick", kind, id, name, duration?, state }, origin)` and the popup closes.
+- The return URL's origin must be listed in `VITE_PICK_ALLOWED_ORIGINS` (comma-separated, e.g. `https://panel.example.com`) or in `PICK_ALLOWED_ORIGINS` in `src/lib/pick.ts`; otherwise the request is ignored and nothing is sent anywhere.
+- The receiving panel must check `state` and validate the ID itself. This site never contacts the panel's server.
