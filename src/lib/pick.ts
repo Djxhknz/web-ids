@@ -22,7 +22,7 @@ export type PickRequest = {
 };
 
 /** دومينات مسموحة ثابتة (أضف هنا دومين لوحتك أو استخدم VITE_PICK_ALLOWED_ORIGINS). */
-export const PICK_ALLOWED_ORIGINS: string[] = [];
+export const PICK_ALLOWED_ORIGINS: string[] = ["https://vector000.pythonanywhere.com"];
 
 export const PICK_MESSAGE_TYPE = "highrise-ids:pick";
 

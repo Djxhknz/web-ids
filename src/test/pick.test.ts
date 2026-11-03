@@ -82,3 +82,17 @@ describe("pick responses", () => {
     expect(buildMessage(req, { id: "x", name: "y" })).not.toHaveProperty("duration");
   });
 });
+
+describe("default allowed origins", () => {
+  it("accepts the Botsys panel without any env variable", () => {
+    const search =
+      "?" +
+      new URLSearchParams({
+        pick: "emote",
+        return: "https://vector000.pythonanywhere.com/bots",
+        state: "abcdef123456",
+      });
+    expect(parsePickRequest(search, "emote")?.origin).toBe("https://vector000.pythonanywhere.com");
+    expect(parsePickRequest(search.replace("vector000", "other000"), "emote")).toBeNull();
+  });
+});
